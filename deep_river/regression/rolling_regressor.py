@@ -197,7 +197,8 @@ class RollingRegressor(RollingDeepEstimator, Regressor):
                 x_win = self._x_window.copy()
                 x_win.append(list(x.values()))
                 x_t = deque2rolling_tensor(x_win, device=self.device)
-                res = self.module(x_t).detach().numpy().item()
+                nparr = self.module(x_t).detach().cpu().numpy()
+                res = nparr.item() if len(nparr)==1 else nparr.tolist()
 
         if self.append_predict:
             self._x_window.append(list(x.values()))

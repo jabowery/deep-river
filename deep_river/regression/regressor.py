@@ -154,7 +154,7 @@ class Regressor(DeepEstimator, base.MiniBatchRegressor):
         self.module.train()
         self.optimizer.zero_grad()
         y_pred = self.module(x)
-        loss = self.loss_fn(y_pred, y)
+        loss = self.loss_fn(y_pred, y if len(y_pred)==1 else y[0][0])
         loss.backward()
         self.optimizer.step()
 
